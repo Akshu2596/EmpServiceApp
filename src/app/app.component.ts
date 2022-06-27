@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Employee } from './models/employee.model';
 import { EmployeeService } from './services/employee.service';
 
 @Component({
@@ -8,7 +9,14 @@ import { EmployeeService } from './services/employee.service';
 })
 export class AppComponent implements OnInit {
   title = 'EmpServiceApp';
-
+  employees: Employee[] = []
+  emp: Employee = {
+    id: '',
+    firstName:'',
+    lastName:'',
+    phoneNumber: '',
+    department:''
+  }
 constructor(private employeeService: EmployeeService){
 
 
@@ -21,8 +29,27 @@ constructor(private employeeService: EmployeeService){
     this.employeeService.getAllEmployees()
     .subscribe(
       response => {
-        console.log(response);
+        this.employees = response;
       }
     );
   }
+
+  onSubmit(){
+    this.employeeService.addEmployee(this.emp)
+    .subscribe(
+      response => {
+        this.getAllEmployees();
+        this.emp = {
+          id: '',
+          firstName:'',
+          lastName:'',
+          phoneNumber: '',
+          department:''
+        }
+      }
+    )
+
+  }
+
+  
 }
