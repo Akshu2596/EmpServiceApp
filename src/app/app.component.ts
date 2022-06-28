@@ -35,10 +35,44 @@ constructor(private employeeService: EmployeeService){
   }
 
   onSubmit(){
-    this.employeeService.addEmployee(this.emp)
+    if(this.emp.id === ''){
+      this.employeeService.addEmployee(this.emp)
+      .subscribe(
+        response => {
+          this.getAllEmployees();
+          this.emp = {
+            id: '',
+            firstName:'',
+            lastName:'',
+            phoneNumber: '',
+            department:''
+          }
+        }
+      )
+    } else {
+      this.updateEmployee(this.emp);
+    }
+   
+  }
+
+  deleteEmployee(id: string){
+    this.employeeService.deleteEmployee(id)
     .subscribe(
       response => {
-        this.getAllEmployees();
+        this.getAllEmployees()
+      }
+    );
+  }
+
+  populateForm(emp: Employee){
+    this.emp = emp;
+  } 
+
+  updateEmployee(emp: Employee){
+    this.employeeService.updateEmployee(emp)
+    .subscribe(
+      response => {
+        this.getAllEmployees()
         this.emp = {
           id: '',
           firstName:'',
@@ -46,10 +80,7 @@ constructor(private employeeService: EmployeeService){
           phoneNumber: '',
           department:''
         }
-      }
-    )
-
+      } 
+    );
   }
-
-  
 }

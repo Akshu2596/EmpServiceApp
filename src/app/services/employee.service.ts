@@ -14,12 +14,19 @@ export class EmployeeService {
   //Get all employees
 
   getAllEmployees(): Observable<Employee[]> {
-    
     return this.http.get<Employee []>(this.serviceUrl);
   }
 
   addEmployee(emp:Employee): Observable<Employee>{
     emp.id = '0'
     return this.http.post<Employee>(this.serviceUrl, emp)
+  }
+
+  deleteEmployee(id: string): Observable<Employee>{
+    return this.http.delete<Employee>(this.serviceUrl + '/' + id)
+  }
+  updateEmployee(emp: Employee): Observable<Employee>{
+    return this.http.put<Employee>(this.serviceUrl +'/'+ emp.id, emp)
+
   }
 }
